@@ -1,0 +1,23 @@
+[
+  {
+    "model": "Models.rare",
+    "pk": 4,
+    "fields": {
+      "name": "Rare"
+    }
+  },
+  {
+    "model": "Models.rare",
+    "pk": 5,
+    "fields": {
+      "name": "Normal"
+    }
+  },
+  {
+    "model": "Models.rare",
+    "pk": 6,
+    "fields": {
+      "name": "Frequent"
+    }
+  }
+]
