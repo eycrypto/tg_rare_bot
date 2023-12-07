@@ -1,1 +1,1 @@
-[{"model": "Models.system", "pk": 1, "fields": {"cooldown": 15}}]
+[{"model": "Models.system", "pk": 1, "fields": {"min": 50, "max": 150}}]
