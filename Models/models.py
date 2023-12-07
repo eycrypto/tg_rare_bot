@@ -32,4 +32,9 @@ class API(models.Model):
 
 
 class System(models.Model):
-    cooldown = models.PositiveIntegerField(default=15, verbose_name='Частота отправки сообщений')
+    min = models.PositiveIntegerField(default=50, verbose_name='Минимальная частота отправки сообщений')
+    max = models.PositiveIntegerField(default=150, verbose_name='Максимальная частота отправки сообщений')
+
+class SendMessage(models.Model):
+    message = models.ForeignKey('Message', on_delete=models.CASCADE, verbose_name='Отправленое сообщение')
+    send_time = models.DateTimeField(auto_now_add=True, verbose_name='Время отправки сообщения')
