@@ -21,3 +21,7 @@ class SystemAdmin(admin.ModelAdmin):
 @admin.register(Rare)
 class RareAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(SendMessage)
+class SendMessageAdmin(admin.ModelAdmin):
+    pass
