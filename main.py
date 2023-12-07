@@ -12,7 +12,7 @@ os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 django.setup()
 os.system('python manage.py runserver &')
 
-from Models.models import Rare, Message, API, System
+from Models.models import Rare, Message, API, System, SendMessage
 from telethon.sync import TelegramClient
 
 
@@ -45,6 +45,7 @@ async def send_message_to_users(api, message):
     await client.send_message(entity='@dsfsfsfssas',
                               message=message.text)
     client.disconnect()
+    SendMessage.objects.create(message=message)
     api.can_send_message = False
     api.last_send_message = datetime.datetime.now()
     api.save()
@@ -65,17 +66,20 @@ async def main():
         all_api = API.objects.filter(is_activate=False)
         await activate_sessions(all_api)
     while True:
-        if normal_use == 2 and offen_use == 4:
-            rare = Rare.objects.get(name='Rare')
-            normal_use = 0
-            offen_use = 0
-        elif (offen_use == 2 and normal_use == 0) or (normal_use == 1 and offen_use == 4):
-            rare = Rare.objects.get(name='Normal')
-            normal_use += 1
-        else:
-            rare = Rare.objects.get(name='Frequent')
-            offen_use += 1
-        message = random.choice(Message.objects.filter(rare=rare))
+        minimum = System.objects.get(id=1).min
+        maximum = System.objects.get(id=1).max
+        need_sleep = random.randint(minimum, maximum)
+        # if normal_use == 2 and offen_use == 4:
+        #   rare = Rare.objects.get(name='Rare')
+        #  normal_use = 0
+        # offen_use = 0
+        # elif (offen_use == 2 and normal_use == 0) or (normal_use == 1 and offen_use == 4):
+        #   rare = Rare.objects.get(name='Normal')
+        #  normal_use += 1
+        # else:
+        #   rare = Rare.objects.get(name='Frequent')
+        #  offen_use += 1
+        message = random.choice(Message.objects.all())
         api = random.choice(API.objects.filter(can_send_message=True))
         print(api.phone)
         await send_message_to_users(api=api, message=message)
