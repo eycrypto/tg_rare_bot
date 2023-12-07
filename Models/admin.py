@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from Models.models import Message, API, System, Rare
+from Models.models import Message, API, System, Rare, SendMessage 
 
 
 @admin.register(Message)
