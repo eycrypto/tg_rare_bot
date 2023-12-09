@@ -56,7 +56,6 @@ async def main():
     p1.start()
     task = input(
         'Вы уже актевировали сессии? Если нет, то введите 1, если акстивировали, но хотите внесли новые номера, нажмите 2, иначе введите любой символ\n')
-    need_sleep = System.objects.get(id=1).cooldown
     normal_use = 0
     offen_use = 2
     if task == '1':
