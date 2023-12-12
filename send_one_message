@@ -11,12 +11,15 @@ from Models.models import Message, API
 from telethon.sync import TelegramClient
 
 user_id = int(input('Введите ID пользователя, от которого хотите отправить сообщение: '))
-message_id = int(input('Введите ID сообщения, которое хотите отправить: '))
+message = input('Введите сообщение или ID сообщения, которое хотите отправить: ')
+try:
+    message = Message.objects.get(id=int(message)).text
+except Exception:
+    pass
 api = API.objects.get(id=user_id)
-message = Message.objects.get(id=message_id)
 client = TelegramClient(api.username, api_id=api.api_id, api_hash=api.api_hash, system_version="4.16.30-vxCUSTOM")
 client.start(phone=api.phone)
 time.sleep(5)
 client.send_message(entity='need_chat',
-                    message=message.text)
+                    message=message)
 client.disconnect()

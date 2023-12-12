@@ -26,7 +26,9 @@ class API(models.Model):
     is_activate = models.BooleanField(default=False, verbose_name='Активирована ли сессия')
 
     def has_24_hours_passed(self):
-        time_difference = (datetime.now()-self.last_send_message.replace(tzinfo=None))
+        time_now = datetime.now()
+        last_time = self.last_send_message.replace(tzinfo=None)
+        time_difference = (time_now-last_time).total_seconds()
         return time_difference.total_seconds() > 24 * 60 * 60
 
 

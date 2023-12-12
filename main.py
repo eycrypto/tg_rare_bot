@@ -17,14 +17,13 @@ from telethon.sync import TelegramClient
 
 
 def check_24_hour():
-    sleep_time = System.objects.get(id=1).cooldown
     while True:
         all_api = API.objects.filter(can_send_message=False)
         for api in all_api:
             if api.has_24_hours_passed:
                 api.can_send_message = True
                 api.save()
-        time.sleep((sleep_time + 1) * 60)
+        time.sleep(15 * 60)
 
 
 async def activate_sessions(all_api):
@@ -79,10 +78,14 @@ async def main():
         #   rare = Rare.objects.get(name='Frequent')
         #  offen_use += 1
         message = random.choice(Message.objects.all())
-        api = random.choice(API.objects.filter(can_send_message=True))
-        print(api.phone)
-        await send_message_to_users(api=api, message=message)
-        time.sleep(need_sleep * 60)
+        try:
+            api = random.choice(API.objects.filter(can_send_message=True))
+            print(api.phone)
+            await send_message_to_users(api=api, message=message)
+            time.sleep(need_sleep * 60)
+        except Exception:
+            print('Нет подходящих пользователей')
+            time.sleep(120)
 
 
 if __name__ == '__main__':

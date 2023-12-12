@@ -12,7 +12,7 @@ cd Tg_rare_bot
 python manage.py makemigrations
 python manage.py migrate
 python manage.py loaddata rare.json
-python manage.py loaddata rare.json
+python manage.py loaddata system.json
 python manage.py createsuperuser
 python manage.py runserver
 ```
