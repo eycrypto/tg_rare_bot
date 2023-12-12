@@ -1,0 +1,22 @@
+import os
+import time
+
+import django
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'Tg_rare_bot.settings'
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+django.setup()
+
+from Models.models import Message, API
+from telethon.sync import TelegramClient
+
+user_id = int(input('Введите ID пользователя, от которого хотите отправить сообщение: '))
+message_id = int(input('Введите ID сообщения, которое хотите отправить: '))
+api = API.objects.get(id=user_id)
+message = Message.objects.get(id=message_id)
+client = TelegramClient(api.username, api_id=api.api_id, api_hash=api.api_hash, system_version="4.16.30-vxCUSTOM")
+client.start(phone=api.phone)
+time.sleep(5)
+client.send_message(entity='need_chat',
+                    message=message.text)
+client.disconnect()
