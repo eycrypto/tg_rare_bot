@@ -10,10 +10,10 @@ import django
 os.environ['DJANGO_SETTINGS_MODULE'] = 'Tg_rare_bot.settings'
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 django.setup()
-os.system('python manage.py runserver &')
 
 from Models.models import Rare, Message, API, System, SendMessage
 from telethon.sync import TelegramClient
+from telethon.tl.functions import account
 
 
 def check_24_hour():
@@ -24,6 +24,23 @@ def check_24_hour():
                 api.can_send_message = True
                 api.save()
         time.sleep(15 * 60)
+
+
+async def bot_status_update():
+    while True:
+        random_diapasine = random.randint(25, 100)
+        all_api = API.objects.all()
+        for api in all_api:
+            username = api.username
+            phone = api.phone
+            api_id = int(api.api_id)
+            api_hash = api.api_hash
+            if random.randint(0, 100) <= random_diapasine:
+                client = TelegramClient(username, api_id=api_id, api_hash=api_hash, system_version="4.16.30-vxCUSTOM")
+                await client.start(phone=phone)
+                await client(account.UpdateStatusRequest(offline=False))
+                await client.disconnect()
+        time.sleep(295)
 
 
 async def activate_sessions(all_api):
@@ -63,6 +80,7 @@ async def main():
     elif task == '2':
         all_api = API.objects.filter(is_activate=False)
         await activate_sessions(all_api)
+    await bot_status_update()
     while True:
         minimum = System.objects.get(id=1).min
         maximum = System.objects.get(id=1).max
