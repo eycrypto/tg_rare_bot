@@ -30,6 +30,7 @@ async def activate_sessions(all_api):
     for api in all_api:
         username = api.username
         phone = api.phone
+        print(phone)
         api_id = int(api.api_id)
         api_hash = api.api_hash
         client = TelegramClient(username, api_id=api_id, api_hash=api_hash, system_version="4.16.30-vxCUSTOM")
@@ -41,7 +42,7 @@ async def send_message_to_users(api, message):
     client = TelegramClient(api.username, api_id=api.api_id, api_hash=api.api_hash, system_version="4.16.30-vxCUSTOM")
     await client.start(phone=api.phone)
     time.sleep(5)
-    await client.send_message(entity='@dsfsfsfssas',
+    await client.send_message(entity='@easychatP2P',
                               message=message.text)
     client.disconnect()
     SendMessage.objects.create(message=message)
