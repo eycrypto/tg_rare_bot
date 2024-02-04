@@ -29,7 +29,7 @@ def check_24_hour():
 async def bot_status_update():
     while True:
         random_diapasine = random.randint(25, 100)
-        all_api = API.objects.all()
+        all_api = API.objects.filter(is_activate=True)
         for api in all_api:
             username = api.username
             phone = api.phone
