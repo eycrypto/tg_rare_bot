@@ -29,7 +29,7 @@ def check_24_hour():
 async def bot_status_update():
     while True:
         random_diapasine = random.randint(25, 100)
-        all_api = API.objects.all()
+        all_api = API.objects.filter(is_activate=True)
         for api in all_api:
             username = api.username
             phone = api.phone
@@ -71,7 +71,8 @@ async def main():
     p1 = Process(target=check_24_hour)
     p1.start()
     task = input(
-        'Вы уже актевировали сессии? Если нет, то введите 1, если акстивировали, но хотите внесли новые номера, нажмите 2, иначе введите любой символ\n')
+        'Вы уже актевировали сессии? Если нет, то введите 1, если акстивировали, но хотите внесли новые номера, нажмите 2, иначе введите любой символ\n'
+        'Если же вы хотите запустить только онлайн, то введите 3')
     normal_use = 0
     offen_use = 2
     if task == '1':
@@ -80,6 +81,8 @@ async def main():
     elif task == '2':
         all_api = API.objects.filter(is_activate=False)
         await activate_sessions(all_api)
+    elif task == '3':
+        await bot_status_update()
     await bot_status_update()
     while True:
         minimum = System.objects.get(id=1).min
