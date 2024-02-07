@@ -7,6 +7,7 @@ import time
 from multiprocessing import Process
 
 import django
+from telethon import types
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'Tg_rare_bot.settings'
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
@@ -39,6 +40,10 @@ async def bot_status_update():
             if random.randint(0, 100) <= random_diapasine:
                 client = TelegramClient(username, api_id=api_id, api_hash=api_hash, system_version="4.16.30-vxCUSTOM")
                 await client.start(phone=phone)
+                await client(account.SetPrivacyRequest(
+                    key=types.InputPrivacyKeyStatusTimestamp(),
+                    rules=[types.InputPrivacyValueAllowAll()])
+                )
                 await client(account.UpdateStatusRequest(offline=False))
                 await client.disconnect()
         time.sleep(295)
