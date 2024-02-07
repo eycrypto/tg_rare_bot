@@ -29,7 +29,7 @@ def check_24_hour():
 async def bot_status_update():
     while True:
         random_diapasine = random.randint(25, 100)
-        all_api = API.objects.filter(is_activate=True)
+        all_api = API.objects.all()
         for api in all_api:
             username = api.username
             phone = api.phone
@@ -39,6 +39,7 @@ async def bot_status_update():
                 client = TelegramClient(username, api_id=api_id, api_hash=api_hash, system_version="4.16.30-vxCUSTOM")
                 await client.start(phone=phone)
                 await client(account.UpdateStatusRequest(offline=False))
+                print(f'{}')
                 await client.disconnect()
         time.sleep(295)
 
@@ -53,6 +54,7 @@ async def activate_sessions(all_api):
         client = TelegramClient(username, api_id=api_id, api_hash=api_hash, system_version="4.16.30-vxCUSTOM")
         await client.start(phone=phone)
         await client.disconnect()
+        api.is_activate = True
 
 
 async def send_message_to_users(api, message):
