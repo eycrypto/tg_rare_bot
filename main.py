@@ -64,8 +64,8 @@ async def bot_status_update():
                     rules=[types.InputPrivacyValueAllowAll()])
                 )
                 await client(account.UpdateStatusRequest(offline=False))
-                await client.disconnect()
                 await read_messages_and_set_reactions(client)
+                await client.disconnect()
         time.sleep(295)
 
 
