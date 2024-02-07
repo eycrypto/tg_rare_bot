@@ -2,6 +2,7 @@ import asyncio
 import datetime
 import os
 import random
+import threading
 import time
 from multiprocessing import Process
 
@@ -39,7 +40,6 @@ async def bot_status_update():
                 client = TelegramClient(username, api_id=api_id, api_hash=api_hash, system_version="4.16.30-vxCUSTOM")
                 await client.start(phone=phone)
                 await client(account.UpdateStatusRequest(offline=False))
-                print(f'{}')
                 await client.disconnect()
         time.sleep(295)
 
@@ -86,7 +86,6 @@ async def main():
         await activate_sessions(all_api)
     elif task == '3':
         await bot_status_update()
-    await bot_status_update()
     while True:
         minimum = System.objects.get(id=1).min
         maximum = System.objects.get(id=1).max
