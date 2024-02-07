@@ -15,7 +15,7 @@ django.setup()
 
 from Models.models import Rare, Message, API, System, SendMessage
 from telethon.sync import TelegramClient
-from telethon.tl.functions import account
+from telethon.tl.functions import account, messages
 
 
 def check_24_hour():
@@ -27,6 +27,25 @@ def check_24_hour():
                 api.save()
         time.sleep(15 * 60)
 
+async def read_messages_and_set_reactions(client):
+    offset_msg = 0
+    limit_msg = 20
+    finish_check_message = True
+    a = True
+    entity = await client.get_entity('https://t.me/easychatP2P')
+    while finish_check_message:
+        history = await client(messages.GetHistoryRequest(
+            peer=entity,
+            offset_id=offset_msg,
+            offset_date=None, add_offset=0,
+            limit=limit_msg, max_id=0, min_id=0,
+            hash=0))
+        if not history.messages:
+            break
+        msgs = history.messages
+        for msg in msgs:
+            time.sleep(1)
+        break
 
 async def bot_status_update():
     while True:
@@ -46,6 +65,7 @@ async def bot_status_update():
                 )
                 await client(account.UpdateStatusRequest(offline=False))
                 await client.disconnect()
+                await read_messages_and_set_reactions(client)
         time.sleep(295)
 
 
